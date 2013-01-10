@@ -3,7 +3,7 @@
 #
 
 define ->
-  class MicroEvent
+	class MicroEvent
 		on: (event, fct) ->
 			@_events or= {}
 			@_events[event] or= []
@@ -13,7 +13,7 @@ define ->
 		once: (event, fct) ->
 			@on event, =>
 				fct.call arguments
-		
+				@off event, fct
 		
 		off: (event, fct) ->
 			return unless @_events
