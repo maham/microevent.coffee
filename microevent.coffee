@@ -22,4 +22,6 @@ define ->
 		
 		emit: (event) ->
 			return unless @_events
-			@_events[event][i].apply @, arguments[1..] for i in [0..@_events[event].length] if event in @_events
+			if @_events[event]
+				for i in [0...@_events[event].length]
+					@_events[event][i].apply @, [].concat event, Array.prototype.slice.call arguments, 1
