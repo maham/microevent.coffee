@@ -26,5 +26,5 @@ define ->
 		
 		emit: (e, data) ->
 			return unless @_events
-			handler.apply @, arguments for handler in @_events[e]
+			handler.apply @, arguments for handler in @_events[e] if @_events[e]
 			@
