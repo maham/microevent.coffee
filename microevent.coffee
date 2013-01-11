@@ -4,24 +4,25 @@
 
 define ->
 	class MicroEvent
-		on: (event, fct) ->
+		on: (e, handler) ->
 			@_events or= {}
-			@_events[event] or= []
-			@_events[event].push fct
+			@_events[e] or= []
+			@_events[e].push handler
 		
 		
-		once: (event, fct) ->
-			@on event, =>
-				fct.call arguments
-				@off event, fct
+		once: (e, handler) ->
+			@on e, =>
+				handler.apply @, arguments
+				@off e, handler
 		
-		off: (event, fct) ->
+		
+		off: (e, handler) ->
 			return unless @_events
-			@_events[event].splice @_events[event].indexOf fct, 1 if @_events[event]
+			@_events[e].splice (@_events[e].indexOf handler), 1 if @_events[e]
 		
 		
-		emit: (event) ->
+		emit: (e, data) ->
 			return unless @_events
-			if @_events[event]
-				for i in [0...@_events[event].length]
-					@_events[event][i].apply @, [].concat event, Array.prototype.slice.call arguments, 1
+			if @_events[e]
+				for i in [0...@_events[e].length]
+					@_events[e][i].apply @, arguments
