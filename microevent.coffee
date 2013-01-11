@@ -8,21 +8,23 @@ define ->
 			@_events or= {}
 			@_events[e] or= []
 			@_events[e].push handler
+			@
 		
 		
 		once: (e, handler) ->
 			@on e, =>
 				handler.apply @, arguments
 				@off e, handler
+			@
 		
 		
 		off: (e, handler) ->
 			return unless @_events
 			@_events[e].splice (@_events[e].indexOf handler), 1 if @_events[e]
+			@
 		
 		
 		emit: (e, data) ->
 			return unless @_events
-			if @_events[e]
-				for i in [0...@_events[e].length]
-					@_events[e][i].apply @, arguments
+			handler.apply @, arguments for handler in @_events[e]
+			@
